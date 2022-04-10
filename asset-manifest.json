@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/nft-cloud/static/css/main.4b313cac.css",
-    "main.js": "/nft-cloud/static/js/main.fda13057.js",
+    "main.js": "/nft-cloud/static/js/main.c9f18830.js",
     "static/js/787.22e3b59d.chunk.js": "/nft-cloud/static/js/787.22e3b59d.chunk.js",
     "static/media/logo.svg": "/nft-cloud/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/nft-cloud/index.html",
     "main.4b313cac.css.map": "/nft-cloud/static/css/main.4b313cac.css.map",
-    "main.fda13057.js.map": "/nft-cloud/static/js/main.fda13057.js.map",
+    "main.c9f18830.js.map": "/nft-cloud/static/js/main.c9f18830.js.map",
     "787.22e3b59d.chunk.js.map": "/nft-cloud/static/js/787.22e3b59d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4b313cac.css",
-    "static/js/main.fda13057.js"
+    "static/js/main.c9f18830.js"
   ]
 }
