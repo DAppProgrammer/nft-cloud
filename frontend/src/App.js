@@ -1,8 +1,21 @@
-import logo from "./logo.svg";
-import "./App.css";
+import { Route, Routes } from "react-router-dom";
 
-function App() {
-  return <h1 className="text-3xl font-bold underline">Holla Mundo!!!</h1>;
-}
+import { Navbar, Home, About } from "./components";
+const App = () => {
+  return (
+    <>
+      <div className="min-h-screen">
+        <div className="gradient-bg-welcome">
+          <Navbar />
+          <Routes>
+            <Route path="/home" element={<Home />} exact />
+            <Route path="/about" element={<About />} exact />
+          </Routes>
+        </div>
+        {/* <Footer /> */}
+      </div>
+    </>
+  );
+};
 
 export default App;
