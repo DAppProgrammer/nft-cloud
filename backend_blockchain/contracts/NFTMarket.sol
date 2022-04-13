@@ -152,11 +152,11 @@ contract NFTMarket is ReentrancyGuard {
         for (uint256 i = 1; i <= itemCount; i++) {
             if (
                 (_ownershipType == OwnershipType.market &&
-                    marketItems[i].owner == address(0)) ||
+                    marketItems[i].owner == payable(address(0))) ||
                 (_ownershipType == OwnershipType.owner &&
-                    marketItems[i].owner == msg.sender) ||
+                    marketItems[i].owner == payable(msg.sender)) ||
                 (_ownershipType == OwnershipType.seller &&
-                    marketItems[i].seller == msg.sender)
+                    marketItems[i].seller == payable(msg.sender))
             ) {
                 arrItems[arrItemIdx] = marketItems[i];
                 arrItemIdx++;

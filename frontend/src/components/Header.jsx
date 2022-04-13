@@ -2,14 +2,20 @@
 import { Link } from "react-router-dom";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon, SwitchVerticalIcon, SunIcon } from "@heroicons/react/outline";
+import {
+  BellIcon,
+  MenuIcon,
+  XIcon,
+  SwitchVerticalIcon,
+  SunIcon
+} from "@heroicons/react/outline";
 
 const navigation = [
-    { name: "Market Items", href: "/marketItems", current: true },
-    { name: "My Items", href: "/myItems", current: true },
-    { name: "Team", href: "/about", current: false },
-  { name: "Projects", href: "home", current: false },
-  { name: "Calendar", href: "about", current: false }
+  { name: "Market Items", href: "/marketItems", current: false },
+  { name: "My Items", href: "/myItems", current: false },
+  { name: "Team", href: "/about", current: false },
+  { name: "Projects", href: "/home", current: false },
+  { name: "Calendar", href: "/about", current: false }
 ];
 
 function classNames(...classes) {
@@ -72,7 +78,7 @@ export default function Example() {
                   type="button"
                   className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                 >
-                  <span className="sr-only">View notifications</span>
+                  {/* <span className="sr-only">View notifications</span> */}
                   <SunIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
@@ -84,17 +90,15 @@ export default function Example() {
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
-                  as="a"
-                  href={item.href}
                   className={classNames(
                     item.current
                       ? "bg-gray-900 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block px-3 py-2 rounded-md text-base font-medium"
+                    "block px-3 py-2 rounded-md text-base font-medium w-full text-left aria-current"
                   )}
                   aria-current={item.current ? "page" : undefined}
                 >
-                  {item.name}
+                  <Link to={item.href}>{item.name}</Link>
                 </Disclosure.Button>
               ))}
             </div>

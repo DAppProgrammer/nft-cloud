@@ -14,5 +14,5 @@ node scripts/sample-script.js
 npx hardhat help
 ```
 
-npx hardhat verify 0x20D63204bad2eBFe7475d2eE37FcDb68953EAAbd --network mumbai
-npx hardhat verify 0x86e3E68BBF3ef96d612d84102B1255Eb0D85DFeb 0x20D63204bad2eBFe7475d2eE37FcDb68953EAAbd --network mumbai
+npx hardhat verify 0xEf714D39f3CF6235C7605bBFA2F30FD2793b5e19 --network mumbai
+npx hardhat verify 0x2f3609ECc9EfC623a0c4Bcba54D2894fcE935b78 0xEf714D39f3CF6235C7605bBFA2F30FD2793b5e19 --network mumbai
