@@ -29,6 +29,7 @@ const getContract = async (contractName, withSigner) => {
 export const TransactionProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [marketItems, setMarketItems] = useState([]);
+  const [myItems, setMyItems] = useState([]);
 
   const fetchMarketItems = async () => {
     setLoading(true);
@@ -39,12 +40,23 @@ export const TransactionProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const fetchMyItems = async () => {
+    setLoading(true);
+    const contract = await getContract("Market", true);
+    console.log("CONTRACT: ", contract);
+    const myItems = await contract.fetchMyOwnedItems();
+    setMyItems(myItems);
+    setLoading(false);
+  };
+
   return (
     <TransactionContext.Provider
       value={{
         loading,
         fetchMarketItems,
-        marketItems
+        marketItems,
+        fetchMyItems,
+        myItems
       }}
     >
       {children}

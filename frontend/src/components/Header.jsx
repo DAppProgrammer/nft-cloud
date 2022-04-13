@@ -5,8 +5,9 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, SwitchVerticalIcon, SunIcon } from "@heroicons/react/outline";
 
 const navigation = [
-  { name: "Market Items", href: "/marketItems", current: true },
-  { name: "Team", href: "/about", current: false },
+    { name: "Market Items", href: "/marketItems", current: true },
+    { name: "My Items", href: "/myItems", current: true },
+    { name: "Team", href: "/about", current: false },
   { name: "Projects", href: "home", current: false },
   { name: "Calendar", href: "about", current: false }
 ];
