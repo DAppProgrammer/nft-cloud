@@ -13,17 +13,6 @@ export const TransactionContext = React.createContext();
 
 const { ethereum } = window;
 
-const requestAccount = async () => {
-  try {
-    if (!ethereum) return alert("Please install metamask");
-    await ethereum.request({
-      method: "eth_requestAccounts"
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const getContract = async (contractName, withSigner) => {
   if (!ethereum) return alert("Please install metamask");
   const provider = new ethers.providers.Web3Provider(ethereum);
@@ -33,7 +22,6 @@ const getContract = async (contractName, withSigner) => {
   let contract;
   if (contractName === "NFT") {
     if (withSigner) {
-      requestAccount();
       contract = new ethers.Contract(
         NFT_ADDRESS,
         NFT_ABI,
@@ -58,6 +46,29 @@ export const TransactionProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [marketItems, setMarketItems] = useState([]);
   const [myItems, setMyItems] = useState([]);
+  const [currentAccount, setCurrentAccount] = useState();
+
+  useEffect(() => {
+    (async () => {
+      await checkIfWalletIsConnected();
+    })();
+  }, []);
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!ethereum) return alert("Please install MetaMask.");
+
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+
+      if (accounts.length) {
+        setCurrentAccount(accounts[0]);
+      } else {
+        console.log("No accounts found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchMarketItems = async () => {
     setLoading(true);
@@ -97,7 +108,7 @@ export const TransactionProvider = ({ children }) => {
     const nftContract = await getContract("NFT", false);
     const marketContract = await getContract("MARKET", false);
     const address = await nftContract.address;
-    const data = await marketContract.fetchMyOwnedItems();
+    const data = await marketContract.fetchMyOwnedItems({from: currentAccount});
     const myItems = await Promise.all(
       data.map(async (i) => {
         const tokenUri = await nftContract.tokenURI(i.tokenId);
