@@ -3,17 +3,35 @@ import { TransactionContext } from "../context/TransactionContext";
 import { Loader } from "./Loader";
 
 const MyItems = () => {
-  const { fetchMyItems, myItems, loading } =
-    useContext(TransactionContext);
+  const {
+    currentAccount,
+    connectWallet,
+    fetchMyItems,
+    myItems,
+    loading
+  } = useContext(TransactionContext);
 
   useEffect(() => {
+    alert("Current account:" + currentAccount);
+    if (currentAccount === undefined) return;
     (async () => {
       await fetchMyItems();
       console.log("My Items:", myItems);
     })();
-  }, []);
+  }, [currentAccount]);
 
   if (loading) return <Loader />;
+  if (currentAccount === undefined)
+    return (
+      <>
+        <button
+          className="border-2 rounded-sm shadow-sm bg-cyan-50 p-5"
+          onClick={connectWallet}
+        >
+          Connect Wallet!!!
+        </button>
+      </>
+    );
   return (
     <div className="flex justify-center">
       <div className="px-4" style={{ maxWidth: "1600px" }}>

@@ -11,34 +11,57 @@ import {
 } from "../components/utils/constants";
 export const TransactionContext = React.createContext();
 
+const networks = {
+  mumbaiTestnet: {
+    chainId: "0x13881",
+    chainName: "Mumbai Testne",
+    nativeCurrency: {
+      name: "Matic",
+      symbol: "Matic",
+      decimals: 18
+    },
+    rpcUrls: ["https://rpc-mumbai.maticvigil.com"]
+  }
+};
 const { ethereum } = window;
+
+ethereum.on("chainChanged", (_chainId) => window.location.reload());
+
+const changeNetwork = async (networkName) => {
+  try {
+    if (!ethereum) return alert("Please install metamask");
+
+    await ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          ...networks[networkName]
+        }
+      ]
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 const getContract = async (contractName, withSigner) => {
   if (!ethereum) return alert("Please install metamask");
-  const provider = new ethers.providers.Web3Provider(ethereum);
-  const signer = provider.signer;
-  console.log("provider", provider);
-  console.log("signer", signer);
-  let contract;
-  if (contractName === "NFT") {
-    if (withSigner) {
-      contract = new ethers.Contract(
-        NFT_ADDRESS,
-        NFT_ABI,
-        provider.getSigner()
-      );
-    } else contract = new ethers.Contract(NFT_ADDRESS, NFT_ABI, provider);
-  } else if (contractName === "MARKET") {
-    if (withSigner) {
-      const web3Modal = new Web3Modal();
-      const connection = await web3Modal.connect();
-      const provider = new ethers.providers.Web3Provider(connection);
-      const signer = provider.getSigner();
-
-      contract = new ethers.Contract(MARKET_ADDRESS, MARKET_ABI, signer);
-    } else contract = new ethers.Contract(MARKET_ADDRESS, MARKET_ABI, provider);
+  let contractAddrss, contractAbi;
+  switch (contractName) {
+    case "NFT":
+      contractAddrss = NFT_ADDRESS;
+      contractAbi = NFT_ABI;
+      break;
+    case "MARKET":
+      contractAddrss = MARKET_ADDRESS;
+      contractAbi = MARKET_ABI;
+      break;
   }
-
+  const provider = new ethers.providers.Web3Provider(ethereum);
+  const contract = new ethers.Contract(contractAddrss, contractAbi, provider);
+  if (withSigner) {
+    contract.connect(provider.getSigner());
+  }
   return contract;
 };
 
@@ -46,19 +69,29 @@ export const TransactionProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [marketItems, setMarketItems] = useState([]);
   const [myItems, setMyItems] = useState([]);
-  const [currentAccount, setCurrentAccount] = useState();
+  const [currentAccount, setCurrentAccount] = useState("");
 
   useEffect(() => {
-    (async () => {
-      await checkIfWalletIsConnected();
-    })();
+    connectWallet();
   }, []);
 
-  const checkIfWalletIsConnected = async () => {
+  const connectWallet = async () => {
     try {
       if (!ethereum) return alert("Please install MetaMask.");
 
-      const accounts = await ethereum.request({ method: "eth_accounts" });
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts"
+      });
+
+      const chainId = await ethereum.request({
+        method: "eth_chainId"
+      });
+
+      if (chainId != "0x13881") {
+        // alert("Please select mumbai testnet");
+        // return;
+        await changeNetwork("mumbaiTestnet");
+      }
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
@@ -105,10 +138,13 @@ export const TransactionProvider = ({ children }) => {
 
   const fetchMyItems = async () => {
     setLoading(true);
+
     const nftContract = await getContract("NFT", false);
     const marketContract = await getContract("MARKET", false);
     const address = await nftContract.address;
-    const data = await marketContract.fetchMyOwnedItems({from: currentAccount});
+    const data = await marketContract.fetchMyOwnedItems({
+      from: currentAccount
+    });
     const myItems = await Promise.all(
       data.map(async (i) => {
         const tokenUri = await nftContract.tokenURI(i.tokenId);
@@ -132,8 +168,6 @@ export const TransactionProvider = ({ children }) => {
 
   const buyNFT = async (nft) => {
     const contract = await getContract("MARKET", true);
-    console.log("buyNFT:", contract);
-    console.log("NFT Address: ", nft.address);
     const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
     const tx = await contract.createMarketSale(nft.address, nft.tokenId, {
       value: price
@@ -150,7 +184,9 @@ export const TransactionProvider = ({ children }) => {
         marketItems,
         fetchMyItems,
         myItems,
-        buyNFT
+        buyNFT,
+        connectWallet,
+        currentAccount
       }}
     >
       {children}

@@ -1,6 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 
-import { Navbar, Header, Home, About, MarketItems, MyItems } from "./components";
+import {
+  Navbar,
+  Header,
+  Home,
+  About,
+  MarketItems,
+  MyItems
+} from "./components";
 // import MarketItems from "./components/MarketItems";
 // import MyItems from "./components/MyItems";
 const App = () => {
@@ -11,7 +18,8 @@ const App = () => {
         {/* <div className="gradient-bg-welcome"> */}
         <div>
           <Routes>
-            <Route path="/home" element={<Home />} exact />
+            <Route path="/" element={<MarketItems />} exact />
+            <Route path="/nft-cloud/" element={<MarketItems />} exact />
             <Route path="/marketItems" element={<MarketItems />} exact />
             <Route path="/myItems" element={<MyItems />} exact />
             <Route path="/about" element={<About />} exact />
