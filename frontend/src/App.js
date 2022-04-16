@@ -18,8 +18,7 @@ const App = () => {
         {/* <div className="gradient-bg-welcome"> */}
         <div>
           <Routes>
-            <Route path="/" element={<MarketItems />} exact />
-            <Route path="/nft-cloud/" element={<MarketItems />} exact />
+            <Route path="" element={<MarketItems />} exact />
             <Route path="/marketItems" element={<MarketItems />} exact />
             <Route path="/myItems" element={<MyItems />} exact />
             <Route path="/about" element={<About />} exact />
