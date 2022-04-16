@@ -44,21 +44,19 @@ const changeNetwork = async (networkName) => {
   }
 };
 
+
 const getContract = async (contractName, withSigner) => {
   if (!ethereum) return alert("Please install metamask");
-  let contractAddrss, contractAbi;
+  const provider = new ethers.providers.Web3Provider(ethereum);
+  let contract;
   switch (contractName) {
     case "NFT":
-      contractAddrss = NFT_ADDRESS;
-      contractAbi = NFT_ABI;
+      contract = new ethers.Contract(NFT_ADDRESS, NFT_ABI, provider);
       break;
-    case "MARKET":
-      contractAddrss = MARKET_ADDRESS;
-      contractAbi = MARKET_ABI;
+      case "MARKET":
+      contract = new ethers.Contract(MARKET_ADDRESS, MARKET_ABI, provider);
       break;
   }
-  const provider = new ethers.providers.Web3Provider(ethereum);
-  const contract = new ethers.Contract(contractAddrss, contractAbi, provider);
   if (withSigner) {
     contract.connect(provider.getSigner());
   }
