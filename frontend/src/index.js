@@ -11,7 +11,7 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-  <BrowserRouter basename="/nft-cloud/">
+  <BrowserRouter basename="/nft-cloud">
     <TransactionProvider>
       <React.StrictMode>
         <App />

@@ -12,7 +12,6 @@ const MyItems = () => {
   } = useContext(TransactionContext);
 
   useEffect(() => {
-    alert("Current account:" + currentAccount);
     if (currentAccount === undefined) return;
     (async () => {
       await fetchMyItems();
