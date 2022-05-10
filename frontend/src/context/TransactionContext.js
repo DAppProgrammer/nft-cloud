@@ -13,7 +13,7 @@ export const TransactionContext = React.createContext();
 
 const networks = {
   mumbaiTestnet: {
-    chainId: "0x13881",
+    chainId: "80001",
     chainName: "Mumbai Testne",
     nativeCurrency: {
       name: "Matic",
