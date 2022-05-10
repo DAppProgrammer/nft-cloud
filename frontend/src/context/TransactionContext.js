@@ -20,7 +20,7 @@ const networks = {
       symbol: "Matic",
       decimals: 18
     },
-    rpcUrls: ["https://rpc-mumbai.maticvigil.com"]
+    rpcUrls: ["https://rpc-mumbai.matic.today"]
   }
 };
 const { ethereum } = window;
